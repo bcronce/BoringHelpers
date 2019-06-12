@@ -42,7 +42,7 @@ namespace BoringHelpers.Collections
 
             public bool Add(TKey item) => false;
 
-            public void Clear() { } //no-op
+            public void Clear() => throw new NotSupportedException($"Empty set does not support {nameof(Clear)}");
 
             public bool Contains(TKey item) => false;
 

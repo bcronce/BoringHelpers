@@ -9,6 +9,18 @@ namespace BoringHelpers.Collections
     {
         private const string ReadOnlyErrorMessage = "Collection is read-only";
 
+        public static IReadOnlyList<T> ReadOnlyList<T>(T item) => new SingleList<T>(item);
+
+        public static IReadOnlyList<T> ReadOnlyList<T>(T item, IEqualityComparer<T> comparer) => new SingleList<T>(item, comparer);
+
+        public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(KeyValuePair<TKey, TValue> item) => new SingleDictionary<TKey, TValue>(item);
+
+        public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(KeyValuePair<TKey, TValue> item, IEqualityComparer<TKey> comparer) => new SingleDictionary<TKey, TValue>(item, comparer);
+
+        public static IReadOnlyCollection<T> ReadOnlyCollection<T>(T item) => new SingleCollection<T>(item);
+
+        public static IReadOnlyCollection<T> ReadOnlyCollection<T>(T item, IEqualityComparer<T> comparer) => new SingleCollection<T>(item, comparer);
+
         public static IList<T> List<T>(T item) => new SingleList<T>(item);
 
         public static IList<T> List<T>(T item, IEqualityComparer<T> comparer) => new SingleList<T>(item, comparer);
@@ -39,7 +51,7 @@ namespace BoringHelpers.Collections
             yield return single;
         }
 
-        private class SingleCollection<T> : ICollection<T>
+        private class SingleCollection<T> : ICollection<T>, IReadOnlyCollection<T>
         {
             protected T item;
 
@@ -159,7 +171,7 @@ namespace BoringHelpers.Collections
             bool ISet<T>.Add(T item) => throw new NotSupportedException(ReadOnlyErrorMessage);
         }
 
-        private class SingleList<T> : SingleCollection<T>, IList<T>
+        private class SingleList<T> : SingleCollection<T>, IList<T>, IReadOnlyList<T>
         {
             public T this[int index]
             {
@@ -178,13 +190,17 @@ namespace BoringHelpers.Collections
             public void RemoveAt(int index) => throw new NotSupportedException(ReadOnlyErrorMessage);
         }
 
-        private class SingleDictionary<TKey, TValue> : SingleCollection<KeyValuePair<TKey, TValue>>, IDictionary<TKey, TValue>
+        private class SingleDictionary<TKey, TValue> : SingleCollection<KeyValuePair<TKey, TValue>>, IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
         {
             protected IEqualityComparer<TKey> keyComparer;
 
             public ICollection<TKey> Keys => Single.Collection(this.item.Key);
 
             public ICollection<TValue> Values => Single.Collection(this.item.Value);
+
+            IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Single.Enumerable(this.item.Key);
+
+            IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Single.Enumerable(this.item.Value);
 
             public TValue this[TKey key]
             {

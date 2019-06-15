@@ -7,6 +7,8 @@ namespace BoringHelpers.Collections
 {
     public static class Single
     {
+        private const string ReadOnlyErrorMessage = "Collection is read-only";
+
         public static IList<T> List<T>(T item) => new SingleList<T>(item);
 
         public static IList<T> List<T>(T item, IEqualityComparer<T> comparer) => new SingleList<T>(item, comparer);
@@ -37,25 +39,187 @@ namespace BoringHelpers.Collections
             yield return single;
         }
 
-        private class SingleSet<T> : ISet<T>
+        private class SingleCollection<T> : ICollection<T>
         {
-            private T item;
-            public T Item { get { return this.item; } }
-            public SingleSet(T item) => this.item = item;
+            protected T item;
+
+            protected IEqualityComparer<T> comparer;
+
+            public int Count => 1;
+
+            public bool IsReadOnly => true;
+
+            public void Add(T item) => throw new NotSupportedException(ReadOnlyErrorMessage);
+
+            public void Clear() => throw new NotSupportedException(ReadOnlyErrorMessage);
+
+            public bool Contains(T item) => this.comparer.Equals(item, this.item);
+
+            public void CopyTo(T[] array, int arrayIndex) => array[arrayIndex] = this.item;
+
+            public bool Remove(T item) => throw new NotSupportedException(ReadOnlyErrorMessage);
+
+            public IEnumerator<T> GetEnumerator() => Single.Enumerable(this.item).GetEnumerator();
+
+            IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+
+            public SingleCollection(T item)
+            {
+                this.item = item;
+                this.comparer = EqualityComparer<T>.Default;
+            }
+
+            public SingleCollection(T item, IEqualityComparer<T> comparer)
+            {
+                this.item = item;
+                this.comparer = comparer;
+            }
         }
 
-        private class SingleList<T> : IList<T>
+        private class SingleSet<T> : SingleCollection<T>, ISet<T>
         {
-            private T item;
-            public T Item { get { return this.item; } }
-            public SingleList(T item) => this.item = item;
+            public SingleSet(T item) : base(item) { }
+
+            public SingleSet(T item, IEqualityComparer<T> comparer) : base(item, comparer) { }
+
+            public void ExceptWith(IEnumerable<T> other) => throw new NotSupportedException(ReadOnlyErrorMessage);
+
+            public void IntersectWith(IEnumerable<T> other) => throw new NotSupportedException(ReadOnlyErrorMessage);
+
+            protected bool IsSameComparer(IEqualityComparer<T> otherComparer) => EqualityComparer<IEqualityComparer<T>>.Default.Equals(this.comparer, otherComparer);
+
+            public bool IsProperSubsetOf(IEnumerable<T> other)
+            {
+                var otherHashset = other as HashSet<T>;
+                if (otherHashset != null)
+                {
+                    if (otherHashset != null && this.IsSameComparer(otherHashset.Comparer)) return otherHashset.Count > 1 && otherHashset.Contains(this.item);
+                }
+
+                bool containsSame = false;
+                bool containsOther = false;
+                foreach(var item in other)
+                {
+                    var compareResult = this.comparer.Equals(this.item, item);
+                    if (compareResult) containsSame = true;
+                    else containsOther = true;
+
+                    if (containsSame && containsOther) return true;
+                }
+                return false;
+            }
+
+            public bool IsProperSupersetOf(IEnumerable<T> other) => !other.Any(); //Can only be a proper superset of an empty set
+
+            //Since this is a set of one, if there is any overlap, then it is also a subset
+            public bool IsSubsetOf(IEnumerable<T> other) => this.Overlaps(other);
+
+            public bool IsSupersetOf(IEnumerable<T> other)
+            {
+                var otherCollection = other as ICollection<T>;
+
+                //Quick checks of special cases
+                if (otherCollection != null)
+                {
+                    if (otherCollection.Count == 0) return true; //All non-empty sets are a superset of the empty set
+
+                    var otherHashset = otherCollection as HashSet<T>;
+                    if (otherHashset != null
+                        && otherCollection.Count == 1
+                        && this.IsSameComparer(otherHashset.Comparer))
+                    {
+                        return otherHashset.Contains(this.item);
+                    }
+                }
+                return other.Where(i => !this.comparer.Equals(i, this.item)).Any();
+            }
+
+            public bool Overlaps(IEnumerable<T> other)
+            {
+                var otherHashSet = other as HashSet<T>;
+                if (otherHashSet != null && this.IsSameComparer(otherHashSet.Comparer)) return otherHashSet.Contains(this.item);
+                else return other.Contains(this.item, this.comparer);
+            }
+
+            public bool SetEquals(IEnumerable<T> other)
+            {
+                bool containsSame = false;
+                foreach (var item in other)
+                {
+                    if (this.comparer.Equals(item, this.item)) containsSame = true;
+                    else return false;
+                }
+                return containsSame;
+            }
+
+            public void SymmetricExceptWith(IEnumerable<T> other) => throw new NotSupportedException(ReadOnlyErrorMessage);
+
+            public void UnionWith(IEnumerable<T> other) => throw new NotSupportedException(ReadOnlyErrorMessage);
+
+            bool ISet<T>.Add(T item) => throw new NotSupportedException(ReadOnlyErrorMessage);
         }
 
-        private class SingleDictionary<TKey, TValue> : IDictionary<TKey, TValue>
+        private class SingleList<T> : SingleCollection<T>, IList<T>
         {
-            private KeyValuePair<TKey, TValue> item;
-            public KeyValuePair<TKey, TValue> Item { get { return this.item; } }
-            public SingleDictionary(KeyValuePair<TKey, TValue> item) => this.item = item;
+            public T this[int index]
+            {
+                get => index == 0 ? this.item : throw new IndexOutOfRangeException();
+                set => throw new NotSupportedException(ReadOnlyErrorMessage);
+            }
+
+            public SingleList(T item) : base(item) { }
+            public SingleList(T item, IEqualityComparer<T> comparer) : base(item, comparer) { }
+
+            private const int ItemNotFound = -1;
+            public int IndexOf(T item) => this.comparer.Equals(item, this.item) ? 0 : ItemNotFound;
+
+            public void Insert(int index, T item) => throw new NotSupportedException(ReadOnlyErrorMessage);
+
+            public void RemoveAt(int index) => throw new NotSupportedException(ReadOnlyErrorMessage);
+        }
+
+        private class SingleDictionary<TKey, TValue> : SingleCollection<KeyValuePair<TKey, TValue>>, IDictionary<TKey, TValue>
+        {
+            protected IEqualityComparer<TKey> keyComparer;
+
+            public ICollection<TKey> Keys => Single.Collection(this.item.Key);
+
+            public ICollection<TValue> Values => Single.Collection(this.item.Value);
+
+            public TValue this[TKey key]
+            {
+                get
+                {
+                    if (this.TryGetValue(key, out var result)) return result;
+                    else throw new KeyNotFoundException();
+                }
+                set => throw new NotSupportedException(ReadOnlyErrorMessage);
+            }
+
+            public SingleDictionary(KeyValuePair<TKey, TValue> item) : base(item) { }
+
+            public SingleDictionary(KeyValuePair<TKey, TValue> item, IEqualityComparer<TKey> comparer)
+                : base(item) => this.keyComparer = comparer;
+
+            public void Add(TKey key, TValue value) => throw new NotSupportedException(ReadOnlyErrorMessage);
+
+            public bool ContainsKey(TKey key) => this.TryGetValue(key, out var discard);
+
+            public bool Remove(TKey key) => throw new NotSupportedException(ReadOnlyErrorMessage);
+
+            public bool TryGetValue(TKey key, out TValue value)
+            {
+                if (this.keyComparer.Equals(key, this.item.Key))
+                {
+                    value = this.item.Value;
+                    return true;
+                }
+                else
+                {
+                    value = default;
+                    return false;
+                }
+            }
         }
     }
 }

@@ -65,7 +65,7 @@ namespace BoringHelpers.Collections
 
             public bool Overlaps(IEnumerable<TKey> other) => false;
 
-            public bool Remove(TKey item) => false;
+            public bool Remove(TKey item) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
             public bool SetEquals(IEnumerable<TKey> other) => !other.Any();
 
@@ -93,7 +93,7 @@ namespace BoringHelpers.Collections
 
             public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) { } //no-op
 
-            public bool Remove(KeyValuePair<TKey, TValue> item) => false;
+            public bool Remove(KeyValuePair<TKey, TValue> item) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
             IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator() => Empty.Enumerable<KeyValuePair<TKey, TValue>>().GetEnumerator();
         }

@@ -23,6 +23,7 @@ namespace BoringHelpers.Collections
 
         private class EmptyCollection<TKey, TValue> : IDictionary<TKey, TValue>, ISet<TKey>
         {
+            private const string ReadOnlyErrorMessage = "Collection is read-only";
 
             private static EmptyCollection<TKey, TValue> m_Singleton = new EmptyCollection<TKey, TValue>();
             public static EmptyCollection<TKey, TValue> Singleton() => m_Singleton;
@@ -42,17 +43,17 @@ namespace BoringHelpers.Collections
 
             public bool Add(TKey item) => false;
 
-            public void Clear() => throw new NotSupportedException($"Empty set does not support {nameof(Clear)}");
+            public void Clear() => throw new NotSupportedException(ReadOnlyErrorMessage);
 
             public bool Contains(TKey item) => false;
 
             public void CopyTo(TKey[] array, int arrayIndex) { } //no-op
 
-            public void ExceptWith(IEnumerable<TKey> other) => throw new NotSupportedException($"Empty set does not support {nameof(ExceptWith)}");
+            public void ExceptWith(IEnumerable<TKey> other) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
             public IEnumerator<TKey> GetEnumerator() => Empty.Enumerable<TKey>().GetEnumerator();
 
-            public void IntersectWith(IEnumerable<TKey> other) => throw new NotSupportedException($"Empty set does not support {nameof(IntersectWith)}");
+            public void IntersectWith(IEnumerable<TKey> other) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
             public bool IsProperSubsetOf(IEnumerable<TKey> other) => other.Any(); //The empty set is a proper subset of all sets except itself
 
@@ -68,15 +69,15 @@ namespace BoringHelpers.Collections
 
             public bool SetEquals(IEnumerable<TKey> other) => !other.Any();
 
-            public void SymmetricExceptWith(IEnumerable<TKey> other) => throw new NotSupportedException($"Empty set does not support {nameof(SymmetricExceptWith)}");
+            public void SymmetricExceptWith(IEnumerable<TKey> other) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
-            public void UnionWith(IEnumerable<TKey> other) => throw new NotSupportedException($"Empty set does not support {nameof(UnionWith)}");
+            public void UnionWith(IEnumerable<TKey> other) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
-            void ICollection<TKey>.Add(TKey item) => throw new NotSupportedException($"Empty set does not support {nameof(Add)}");
+            void ICollection<TKey>.Add(TKey item) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
             IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
-            public void Add(TKey key, TValue value) => throw new NotSupportedException($"Empty set does not support {nameof(Add)}");
+            public void Add(TKey key, TValue value) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
             public bool ContainsKey(TKey key) => false;
 
@@ -86,7 +87,7 @@ namespace BoringHelpers.Collections
                 return false;
             }
 
-            public void Add(KeyValuePair<TKey, TValue> item) => throw new NotSupportedException($"Empty set does not support {nameof(Add)}");
+            public void Add(KeyValuePair<TKey, TValue> item) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
             public bool Contains(KeyValuePair<TKey, TValue> item) => false;
 

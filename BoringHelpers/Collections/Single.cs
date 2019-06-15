@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 
 namespace BoringHelpers.Collections
 {
@@ -8,13 +9,21 @@ namespace BoringHelpers.Collections
     {
         public static IList<T> List<T>(T item) => new SingleList<T>(item);
 
+        public static IList<T> List<T>(T item, IEqualityComparer<T> comparer) => new SingleList<T>(item, comparer);
+
         public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>(KeyValuePair<TKey, TValue> item) => new SingleDictionary<TKey, TValue>(item);
 
-        public static ICollection<T> Collection<T>(T item) => new SingleList<T>(item);
+        public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>(KeyValuePair<TKey, TValue> item, IEqualityComparer<TKey> comparer) => new SingleDictionary<TKey, TValue>(item, comparer);
+
+        public static ICollection<T> Collection<T>(T item) => new SingleCollection<T>(item);
+
+        public static ICollection<T> Collection<T>(T item, IEqualityComparer<T> comparer) => new SingleCollection<T>(item, comparer);
 
         public static IEnumerable<T> Enumerable<T>(T item) { yield return item; }
 
         public static ISet<T> Set<T>(T item) => new SingleSet<T>(item);
+
+        public static ISet<T> Set<T>(T item, IEqualityComparer<T> comparer) => new SingleSet<T>(item, comparer);
 
         public static IEnumerable<T> ConcatSingle<T>(this IEnumerable<T> left, T single)
         {

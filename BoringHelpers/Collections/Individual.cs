@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace BoringHelpers.Collections
 {
-    public static class Single
+    public static class Individual
     {
         private const string ReadOnlyErrorMessage = "Collection is read-only";
 
@@ -71,7 +71,7 @@ namespace BoringHelpers.Collections
 
             public bool Remove(T item) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
-            public IEnumerator<T> GetEnumerator() => Single.Enumerable(this.item).GetEnumerator();
+            public IEnumerator<T> GetEnumerator() => Individual.Enumerable(this.item).GetEnumerator();
 
             IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
@@ -194,13 +194,13 @@ namespace BoringHelpers.Collections
         {
             protected IEqualityComparer<TKey> keyComparer;
 
-            public ICollection<TKey> Keys => Single.Collection(this.item.Key);
+            public ICollection<TKey> Keys => Individual.Collection(this.item.Key);
 
-            public ICollection<TValue> Values => Single.Collection(this.item.Value);
+            public ICollection<TValue> Values => Individual.Collection(this.item.Value);
 
-            IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Single.Enumerable(this.item.Key);
+            IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Individual.Enumerable(this.item.Key);
 
-            IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Single.Enumerable(this.item.Value);
+            IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Individual.Enumerable(this.item.Value);
 
             public TValue this[TKey key]
             {

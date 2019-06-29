@@ -9,7 +9,7 @@ namespace BoringHelpers.Collections
     {
         public struct VoidStruct { };
 
-        public static IList<T> List<T>() => System.Array.Empty<T>();
+        public static IList<T> List<T>() => EmptyCollection<T, VoidStruct>.Singleton();
 
         public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>() => EmptyCollection<TKey, TValue>.Singleton();
 
@@ -23,7 +23,7 @@ namespace BoringHelpers.Collections
 
         public static ISet<TKey> Set<TKey>() => EmptyCollection<TKey, VoidStruct>.Singleton();
 
-        private class EmptyCollection<TKey, TValue> : IDictionary<TKey, TValue>, ISet<TKey>
+        private class EmptyCollection<TKey, TValue> : IDictionary<TKey, TValue>, ISet<TKey>, IList<TKey>
         {
             private const string ReadOnlyErrorMessage = "Collection is read-only";
 
@@ -41,6 +41,7 @@ namespace BoringHelpers.Collections
 
             public ICollection<TValue> Values => Empty.Collection<TValue>();
 
+            public TKey this[int index] { get => throw new IndexOutOfRangeException(); set => throw new NotSupportedException(ReadOnlyErrorMessage); }
             public TValue this[TKey key] { get => throw new KeyNotFoundException(); set => throw new KeyNotFoundException(); }
 
             public bool Add(TKey item) => false;
@@ -98,6 +99,13 @@ namespace BoringHelpers.Collections
             public bool Remove(KeyValuePair<TKey, TValue> item) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
             IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator() => EmptyEnumerator<KeyValuePair<TKey, TValue>>.Singleton;
+
+            const int listIndexNotFound = -1;
+            public int IndexOf(TKey item) => listIndexNotFound;
+
+            public void Insert(int index, TKey item) => throw new NotSupportedException(ReadOnlyErrorMessage);
+
+            public void RemoveAt(int index) => throw new NotSupportedException(ReadOnlyErrorMessage);
         }
 
         private class EmptyEnumerator<T> : IEnumerator<T>

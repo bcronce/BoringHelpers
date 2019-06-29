@@ -13,9 +13,11 @@ namespace BoringHelpers.Collections
 
         public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>() => EmptyCollection<TKey, TValue>.Singleton();
 
-        public static ICollection<T> Collection<T>() => System.Array.Empty<T>();
+        public static ICollection<T> Collection<T>() => Empty.Set<T>();
 
-        public static IEnumerable<T> Enumerable<T>() => System.Linq.Enumerable.Empty<T>();
+        public static IEnumerable<T> Enumerable<T>() => Empty.Set<T>();
+
+        public static IEnumerator<T> Enumerator<T>() => EmptyEnumerator<T>.Singleton;
 
         public static T[] Array<T>() => System.Array.Empty<T>();
 
@@ -51,7 +53,7 @@ namespace BoringHelpers.Collections
 
             public void ExceptWith(IEnumerable<TKey> other) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
-            public IEnumerator<TKey> GetEnumerator() => Empty.Enumerable<TKey>().GetEnumerator();
+            public IEnumerator<TKey> GetEnumerator() => EmptyEnumerator<TKey>.Singleton;
 
             public void IntersectWith(IEnumerable<TKey> other) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
@@ -95,7 +97,25 @@ namespace BoringHelpers.Collections
 
             public bool Remove(KeyValuePair<TKey, TValue> item) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
-            IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator() => Empty.Enumerable<KeyValuePair<TKey, TValue>>().GetEnumerator();
+            IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator() => EmptyEnumerator<KeyValuePair<TKey, TValue>>.Singleton;
+        }
+
+        private class EmptyEnumerator<T> : IEnumerator<T>
+        {
+
+            public static EmptyEnumerator<T> Singleton { get; protected set; } = new EmptyEnumerator<T>();
+            protected EmptyEnumerator() { }
+
+            public T Current => throw new InvalidOperationException("Enumeration has not started. Call MoveNext.");
+
+            object IEnumerator.Current => throw new InvalidOperationException("Enumeration has not started. Call MoveNext.");
+
+            public bool MoveNext() => false;
+
+            public void Reset() { }
+
+            public void Dispose() { }
+
         }
     }
 }

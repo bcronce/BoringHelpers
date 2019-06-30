@@ -33,7 +33,7 @@ namespace BoringHelpers.Collections
 
         public static ICollection<T> Collection<T>(T item, IEqualityComparer<T> comparer) => new SingleCollection<T>(item, comparer);
 
-        public static IEnumerable<T> Enumerable<T>(T item) { yield return item; }
+        public static IEnumerable<T> Enumerable<T>(T item) => new SingleItem<T>(item);
 
         public static IEnumerator<T> Enumerator<T>(T item) => new SingleEnumerator<T>(item);
 
@@ -51,6 +51,17 @@ namespace BoringHelpers.Collections
         {
             for(int i = 0; i < left.Count; i++) yield return left[i];
             yield return single;
+        }
+
+        private class SingleItem<T> : IEnumerable<T>
+        {
+            protected T item;
+
+            public SingleItem(T item) => this.item = item;
+
+            public IEnumerator<T> GetEnumerator() => Individual.Enumerator(item);
+
+            IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
         }
 
         private class SingleEnumerator<T> : IEnumerator<T>

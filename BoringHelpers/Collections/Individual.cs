@@ -35,6 +35,8 @@ namespace BoringHelpers.Collections
 
         public static IEnumerable<T> Enumerable<T>(T item) { yield return item; }
 
+        public static IEnumerator<T> Enumerator<T>(T item) => new SingleEnumerator<T>(item);
+
         public static ISet<T> Set<T>(T item) => new SingleSet<T>(item);
 
         public static ISet<T> Set<T>(T item, IEqualityComparer<T> comparer) => new SingleSet<T>(item, comparer);
@@ -49,6 +51,55 @@ namespace BoringHelpers.Collections
         {
             for(int i = 0; i < left.Count; i++) yield return left[i];
             yield return single;
+        }
+
+        private class SingleEnumerator<T> : IEnumerator<T>
+        {
+            private T item;
+            private State state = State.Reset;
+            private enum State : byte
+            {
+                Reset,
+                Moved,
+                Done
+            }
+
+            public SingleEnumerator(T item) => this.item = item;
+
+            public T Current
+            {
+                get
+                {
+                    if (this.state == State.Moved)
+                    {
+                        return this.item;
+                    }
+                    throw new InvalidOperationException("Enumeration has not started. Call MoveNext.");
+                }
+            }
+
+            object IEnumerator.Current => this.Current;
+
+            public bool MoveNext()
+            {
+                if (this.state == State.Reset)
+                {
+                    this.state = State.Moved;
+                    return true;
+                }
+                else
+                {
+                    this.state = State.Done;
+                    return false;
+                }
+            }
+
+            public void Reset() => this.state = State.Reset;
+
+            public void Dispose()
+            {
+
+            }
         }
 
         private class SingleCollection<T> : ICollection<T>, IReadOnlyCollection<T>
@@ -71,7 +122,7 @@ namespace BoringHelpers.Collections
 
             public bool Remove(T item) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
-            public IEnumerator<T> GetEnumerator() => Individual.Enumerable(this.item).GetEnumerator();
+            public IEnumerator<T> GetEnumerator() => Individual.Enumerator(this.item);
 
             IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 

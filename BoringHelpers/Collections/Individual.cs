@@ -274,7 +274,8 @@ namespace BoringHelpers.Collections
                 set => throw new NotSupportedException(ReadOnlyErrorMessage);
             }
 
-            public SingleDictionary(KeyValuePair<TKey, TValue> item) : base(item) { }
+            public SingleDictionary(KeyValuePair<TKey, TValue> item) : base(item)
+                => this.keyComparer = EqualityComparer<TKey>.Default;
 
             public SingleDictionary(KeyValuePair<TKey, TValue> item, IEqualityComparer<TKey> comparer)
                 : base(item) => this.keyComparer = comparer;

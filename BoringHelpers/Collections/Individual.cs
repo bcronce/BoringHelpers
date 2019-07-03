@@ -190,21 +190,6 @@ namespace BoringHelpers.Collections
 
             public bool IsSupersetOf(IEnumerable<T> other)
             {
-                var otherCollection = other as ICollection<T>;
-
-                //Quick checks of special cases
-                if (otherCollection != null)
-                {
-                    if (otherCollection.Count == 0) return true; //All non-empty sets are a superset of the empty set
-
-                    var otherHashset = otherCollection as HashSet<T>;
-                    if (otherHashset != null
-                        && otherCollection.Count == 1
-                        && this.IsSameComparer(otherHashset.Comparer))
-                    {
-                        return otherHashset.Contains(this.item);
-                    }
-                }
                 return other.Where(i => !this.comparer.Equals(i, this.item)).Any();
             }
 

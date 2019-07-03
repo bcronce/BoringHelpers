@@ -190,7 +190,16 @@ namespace BoringHelpers.Collections
 
             public bool IsSupersetOf(IEnumerable<T> other)
             {
-                return other.Where(i => !this.comparer.Equals(i, this.item)).Any();
+                bool empty = true;
+                bool contains = false;
+                foreach(var item in other)
+                {
+                    empty = false;
+                    if (this.comparer.Equals(item, this.item)) contains = true;
+                    else return false;
+                }
+
+                return empty ? true : contains;
             }
 
             public bool Overlaps(IEnumerable<T> other)

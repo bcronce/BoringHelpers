@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace BoringHelpersTests.Collections
 {
-    public class Set
+    public class Set_Individual
     {
         [Fact]
         public void Individual_NotSupported_ExceptWith()

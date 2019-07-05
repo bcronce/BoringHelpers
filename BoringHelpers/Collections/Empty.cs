@@ -44,7 +44,7 @@ namespace BoringHelpers.Collections
             public TKey this[int index] { get => throw new IndexOutOfRangeException(); set => throw new NotSupportedException(ReadOnlyErrorMessage); }
             public TValue this[TKey key] { get => throw new KeyNotFoundException(); set => throw new KeyNotFoundException(); }
 
-            public bool Add(TKey item) => false;
+            public bool Add(TKey item) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
             public void Clear() => throw new NotSupportedException(ReadOnlyErrorMessage);
 

@@ -9,6 +9,11 @@ The goal of this project is to help make code easier to read and more efficient.
 
 I love myself a good philosophical debate about code. Feel free to provide constructive criticism.
 
+## Why Boring
+It may not be exciting code, but that's why I am excited about it.
+
+Over these many decades roaming life, I have come to believe that the quality of a product is not defined by how good it typically is, but how bad it can be. What can go wrong will go wrong, at the most inopportune time, and in the worst way possible. Boring code shouldn't supprise you.
+
 # Collections
 Light weight collections that implement common interfaces.
 ## Empty

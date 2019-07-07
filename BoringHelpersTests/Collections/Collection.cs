@@ -37,6 +37,18 @@ namespace BoringHelpersTests.Collections
         [InlineData(42)]
         public void Individual_HasOne(int input) => Assert.Single(Individual.Collection(input), input);
 
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(42)]
+        public void Individual_HasOne_Readonly(int input) => Assert.Single(Individual.ReadOnlyCollection(input), input);
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(42)]
+        public void Individual_HasOne_ReadonlyList(int input) => Assert.Single(Individual.ReadOnlyList(input), input);
+
         [Fact]
         public void Individual_CountOne() => Assert.Equal(1, Individual.Collection(0).Count);
 

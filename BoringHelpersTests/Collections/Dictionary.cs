@@ -18,12 +18,33 @@ namespace BoringHelpersTests.Collections
         }
 
         [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(42)]
+        public void Individual_Contains_Readonly(int input)
+        {
+            var dict = Individual.ReadOnlyDictionary(input, true);
+            Assert.True(dict.ContainsKey(input));
+        }
+
+        [Theory]
         [InlineData("hello world")]
         [InlineData("HELLO WORLD")]
         [InlineData("HeLlO wOrLd")]
         public void Individual_ContainsComparer(string input)
         {
             var dict = Individual.Dictionary(input, true, StringComparer.OrdinalIgnoreCase);
+            Assert.True(dict.ContainsKey(input.ToLower()));
+            Assert.True(dict.ContainsKey(input.ToUpper()));
+        }
+
+        [Theory]
+        [InlineData("hello world")]
+        [InlineData("HELLO WORLD")]
+        [InlineData("HeLlO wOrLd")]
+        public void Individual_ContainsComparer_Readonly(string input)
+        {
+            var dict = Individual.ReadOnlyDictionary(input, true, StringComparer.OrdinalIgnoreCase);
             Assert.True(dict.ContainsKey(input.ToLower()));
             Assert.True(dict.ContainsKey(input.ToUpper()));
         }

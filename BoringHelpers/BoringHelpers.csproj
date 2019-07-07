@@ -10,6 +10,7 @@
     <RepositoryUrl>https://github.com/bcronce/BoringHelpers</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <PackageTags>helper efficient netstandard collection</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

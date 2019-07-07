@@ -11,16 +11,12 @@ namespace BoringHelpers.Collections
 
         public static IReadOnlyList<T> ReadOnlyList<T>(T item) => new SingleList<T>(item);
 
-        public static IReadOnlyList<T> ReadOnlyList<T>(T item, IEqualityComparer<T> comparer) => new SingleList<T>(item, comparer);
-
         public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(TKey key, TValue value) => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value));
 
         public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(TKey key, TValue value, IEqualityComparer<TKey> comparer)
             => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value), comparer);
 
         public static IReadOnlyCollection<T> ReadOnlyCollection<T>(T item) => new SingleCollection<T>(item);
-
-        public static IReadOnlyCollection<T> ReadOnlyCollection<T>(T item, IEqualityComparer<T> comparer) => new SingleCollection<T>(item, comparer);
 
         public static IList<T> List<T>(T item) => new SingleList<T>(item);
 

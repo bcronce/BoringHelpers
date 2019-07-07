@@ -13,9 +13,10 @@ namespace BoringHelpers.Collections
 
         public static IReadOnlyList<T> ReadOnlyList<T>(T item, IEqualityComparer<T> comparer) => new SingleList<T>(item, comparer);
 
-        public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(KeyValuePair<TKey, TValue> item) => new SingleDictionary<TKey, TValue>(item);
+        public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(TKey key, TValue value) => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value));
 
-        public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(KeyValuePair<TKey, TValue> item, IEqualityComparer<TKey> comparer) => new SingleDictionary<TKey, TValue>(item, comparer);
+        public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(TKey key, TValue value, IEqualityComparer<TKey> comparer)
+            => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value), comparer);
 
         public static IReadOnlyCollection<T> ReadOnlyCollection<T>(T item) => new SingleCollection<T>(item);
 
@@ -25,9 +26,10 @@ namespace BoringHelpers.Collections
 
         public static IList<T> List<T>(T item, IEqualityComparer<T> comparer) => new SingleList<T>(item, comparer);
 
-        public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>(KeyValuePair<TKey, TValue> item) => new SingleDictionary<TKey, TValue>(item);
+        public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>(TKey key, TValue value) => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value));
 
-        public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>(KeyValuePair<TKey, TValue> item, IEqualityComparer<TKey> comparer) => new SingleDictionary<TKey, TValue>(item, comparer);
+        public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>(TKey key, TValue value, IEqualityComparer<TKey> comparer)
+            => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value), comparer);
 
         public static ICollection<T> Collection<T>(T item) => new SingleCollection<T>(item);
 

@@ -1,5 +1,5 @@
 # BoringHelpers
-![GitHub](https://img.shields.io/github/license/bcronce/BoringHelpers.svg)
+[![Licence](https://img.shields.io/github/license/bcronce/BoringHelpers.svg)](LICENSE)
 
 [![Build Status](https://travis-ci.org/bcronce/BoringHelpers.svg?branch=master)](https://travis-ci.org/bcronce/BoringHelpers)
 

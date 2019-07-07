@@ -39,13 +39,13 @@ namespace BoringHelpers.Collections
 
         public static ISet<T> Set<T>(T item, IEqualityComparer<T> comparer) => new SingleSet<T>(item, comparer);
 
-        public static IEnumerable<T> ConcatSingle<T>(this IEnumerable<T> left, T single)
+        public static IEnumerable<T> ConcatIndividual<T>(this IEnumerable<T> left, T single)
         {
             foreach (var item in left) yield return item;
             yield return single;
         }
 
-        public static IEnumerable<T> ConcatSingle<T>(this IList<T> left, T single)
+        public static IEnumerable<T> ConcatIndividual<T>(this IList<T> left, T single)
         {
             for(int i = 0; i < left.Count; i++) yield return left[i];
             yield return single;

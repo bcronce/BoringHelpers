@@ -103,7 +103,7 @@ namespace BoringHelpers.Collections
                 }
             }
 
-            public void Reset() => this.state = State.Reset;
+            public void Reset() => throw new NotSupportedException();
 
             public void Dispose()
             {

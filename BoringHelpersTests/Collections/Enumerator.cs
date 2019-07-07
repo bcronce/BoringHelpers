@@ -16,6 +16,13 @@ namespace BoringHelpersTests.Collections
         }
 
         [Fact]
+        public void Individual_ResetNotSupported()
+        {
+            var enumerator = Individual.Enumerator<int>(default);
+            Assert.Throws<NotSupportedException>(enumerator.Reset);
+        }
+
+        [Fact]
         public void Individual_ReadAfterSecondMove()
         {
             var enumerator = Individual.Enumerator<int>(default);

@@ -3,13 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
     <Authors>Benjamin Cronce</Authors>
-    <Version>0.0.1</Version>
+    <Version>0.0.1.1</Version>
     <Copyright>Copyright ©2019 Benjamin Cronce</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/bcronce/BoringHelpers</PackageProjectUrl>
     <RepositoryUrl>https://github.com/bcronce/BoringHelpers</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <PackageTags>helper efficient netstandard collection</PackageTags>
+    <FileVersion>0.0.1.0</FileVersion>
+    <Description>General use library to help make your code cleaner and more efficient.</Description>
   </PropertyGroup>
 
   <ItemGroup>

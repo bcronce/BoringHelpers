@@ -7,28 +7,11 @@ namespace BoringHelpersTests.Collections
 {
     public class Enumerator
     {
-
-        [Fact]
-        public void Individual_MustMoveNext()
-        {
-            var enumerator = Individual.Enumerator<int>(default);
-            Assert.Throws<InvalidOperationException>(() => enumerator.Current);
-        }
-
         [Fact]
         public void Individual_ResetNotSupported()
         {
             var enumerator = Individual.Enumerator<int>(default);
             Assert.Throws<NotSupportedException>(enumerator.Reset);
-        }
-
-        [Fact]
-        public void Individual_ReadAfterSecondMove()
-        {
-            var enumerator = Individual.Enumerator<int>(default);
-            Assert.True(enumerator.MoveNext());
-            Assert.False(enumerator.MoveNext());
-            Assert.Throws<InvalidOperationException>(() => enumerator.Current);
         }
 
         [Theory]

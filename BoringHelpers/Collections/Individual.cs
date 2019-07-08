@@ -64,43 +64,19 @@ namespace BoringHelpers.Collections
 
         private class SingleEnumerator<T> : IEnumerator<T>
         {
-            private T item;
-            private State state = State.Reset;
-            private enum State : byte
-            {
-                Reset,
-                Moved,
-                Done
-            }
+            private bool moved = false;
 
-            public SingleEnumerator(T item) => this.item = item;
+            public SingleEnumerator(T item) => this.Current = item;
 
-            public T Current
-            {
-                get
-                {
-                    if (this.state == State.Moved)
-                    {
-                        return this.item;
-                    }
-                    throw new InvalidOperationException("Enumeration has not started. Call MoveNext.");
-                }
-            }
+            public T Current { get; }
 
             object IEnumerator.Current => this.Current;
 
             public bool MoveNext()
             {
-                if (this.state == State.Reset)
-                {
-                    this.state = State.Moved;
-                    return true;
-                }
-                else
-                {
-                    this.state = State.Done;
-                    return false;
-                }
+                if (this.moved) return false;
+                this.moved = true;
+                return true;
             }
 
             public void Reset() => throw new NotSupportedException();

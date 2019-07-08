@@ -37,6 +37,18 @@ namespace BoringHelpersTests.Collections
         [InlineData(42)]
         public void Individual_HasOne(int input) => Assert.Single(Individual.Collection(input), input);
 
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(42)]
+        public void Individual_HasOne_Readonly(int input) => Assert.Single(Individual.ReadOnlyCollection(input), input);
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(42)]
+        public void Individual_HasOne_ReadonlyList(int input) => Assert.Single(Individual.ReadOnlyList(input), input);
+
         [Fact]
         public void Individual_CountOne() => Assert.Equal(1, Individual.Collection(0).Count);
 
@@ -54,9 +66,61 @@ namespace BoringHelpersTests.Collections
         [InlineData("")]
         [InlineData("foobar")]
         [InlineData("HeLlO wOrLd")]
+        public void Individual_Contains_List(string input)
+        {
+            var collection = Individual.List(input);
+            Assert.True(collection.Contains(input));
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("foobar")]
+        [InlineData("HeLlO wOrLd")]
+        public void Individual_Contains_Set(string input)
+        {
+            var collection = Individual.Set(input);
+            Assert.True(collection.Contains(input));
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("foobar")]
+        [InlineData("HeLlO wOrLd")]
         public void Individual_ContainsComparer(string input)
         {
             var collection = Individual.Collection(input, StringComparer.InvariantCultureIgnoreCase);
+            Assert.True(collection.Contains(input));
+
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                Assert.True(collection.Contains(input.ToLowerInvariant()));
+                Assert.True(collection.Contains(input.ToUpperInvariant()));
+            }
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("foobar")]
+        [InlineData("HeLlO wOrLd")]
+        public void Individual_ContainsComparer_List(string input)
+        {
+            var collection = Individual.List(input, StringComparer.InvariantCultureIgnoreCase);
+            Assert.True(collection.Contains(input));
+
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                Assert.True(collection.Contains(input.ToLowerInvariant()));
+                Assert.True(collection.Contains(input.ToUpperInvariant()));
+            }
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("foobar")]
+        [InlineData("HeLlO wOrLd")]
+        public void Individual_ContainsComparer_Set(string input)
+        {
+            var collection = Individual.Set(input, StringComparer.InvariantCultureIgnoreCase);
             Assert.True(collection.Contains(input));
 
             if (!string.IsNullOrWhiteSpace(input))

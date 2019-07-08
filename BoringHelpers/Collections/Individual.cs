@@ -11,23 +11,21 @@ namespace BoringHelpers.Collections
 
         public static IReadOnlyList<T> ReadOnlyList<T>(T item) => new SingleList<T>(item);
 
-        public static IReadOnlyList<T> ReadOnlyList<T>(T item, IEqualityComparer<T> comparer) => new SingleList<T>(item, comparer);
+        public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(TKey key, TValue value) => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value));
 
-        public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(KeyValuePair<TKey, TValue> item) => new SingleDictionary<TKey, TValue>(item);
-
-        public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(KeyValuePair<TKey, TValue> item, IEqualityComparer<TKey> comparer) => new SingleDictionary<TKey, TValue>(item, comparer);
+        public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(TKey key, TValue value, IEqualityComparer<TKey> comparer)
+            => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value), comparer);
 
         public static IReadOnlyCollection<T> ReadOnlyCollection<T>(T item) => new SingleCollection<T>(item);
-
-        public static IReadOnlyCollection<T> ReadOnlyCollection<T>(T item, IEqualityComparer<T> comparer) => new SingleCollection<T>(item, comparer);
 
         public static IList<T> List<T>(T item) => new SingleList<T>(item);
 
         public static IList<T> List<T>(T item, IEqualityComparer<T> comparer) => new SingleList<T>(item, comparer);
 
-        public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>(KeyValuePair<TKey, TValue> item) => new SingleDictionary<TKey, TValue>(item);
+        public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>(TKey key, TValue value) => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value));
 
-        public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>(KeyValuePair<TKey, TValue> item, IEqualityComparer<TKey> comparer) => new SingleDictionary<TKey, TValue>(item, comparer);
+        public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>(TKey key, TValue value, IEqualityComparer<TKey> comparer)
+            => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value), comparer);
 
         public static ICollection<T> Collection<T>(T item) => new SingleCollection<T>(item);
 
@@ -41,13 +39,13 @@ namespace BoringHelpers.Collections
 
         public static ISet<T> Set<T>(T item, IEqualityComparer<T> comparer) => new SingleSet<T>(item, comparer);
 
-        public static IEnumerable<T> ConcatSingle<T>(this IEnumerable<T> left, T single)
+        public static IEnumerable<T> ConcatIndividual<T>(this IEnumerable<T> left, T single)
         {
             foreach (var item in left) yield return item;
             yield return single;
         }
 
-        public static IEnumerable<T> ConcatSingle<T>(this IList<T> left, T single)
+        public static IEnumerable<T> ConcatIndividual<T>(this IList<T> left, T single)
         {
             for(int i = 0; i < left.Count; i++) yield return left[i];
             yield return single;
@@ -66,46 +64,22 @@ namespace BoringHelpers.Collections
 
         private class SingleEnumerator<T> : IEnumerator<T>
         {
-            private T item;
-            private State state = State.Reset;
-            private enum State : byte
-            {
-                Reset,
-                Moved,
-                Done
-            }
+            private bool moved = false;
 
-            public SingleEnumerator(T item) => this.item = item;
+            public SingleEnumerator(T item) => this.Current = item;
 
-            public T Current
-            {
-                get
-                {
-                    if (this.state == State.Moved)
-                    {
-                        return this.item;
-                    }
-                    throw new InvalidOperationException("Enumeration has not started. Call MoveNext.");
-                }
-            }
+            public T Current { get; }
 
             object IEnumerator.Current => this.Current;
 
             public bool MoveNext()
             {
-                if (this.state == State.Reset)
-                {
-                    this.state = State.Moved;
-                    return true;
-                }
-                else
-                {
-                    this.state = State.Done;
-                    return false;
-                }
+                if (this.moved) return false;
+                this.moved = true;
+                return true;
             }
 
-            public void Reset() => this.state = State.Reset;
+            public void Reset() => throw new NotSupportedException();
 
             public void Dispose()
             {

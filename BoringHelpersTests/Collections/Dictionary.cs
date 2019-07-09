@@ -120,6 +120,13 @@ namespace BoringHelpersTests.Collections
             Assert.Throws<ArgumentNullException>(() => dict[null]);
         }
 
+        [Fact]
+        public void Individual_SetIndexer()
+        {
+            var dict = Individual.Dictionary<int, bool>(default, default);
+            Assert.Throws<NotSupportedException>(() => dict[default] = default);
+        }
+
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
@@ -189,6 +196,13 @@ namespace BoringHelpersTests.Collections
         {
             var dict = Empty.Dictionary<object, bool>();
             Assert.Throws<ArgumentNullException>(() => dict[null]);
+        }
+
+        [Fact]
+        public void Empty_SetIndexer()
+        {
+            var dict = Empty.Dictionary<int, bool>();
+            Assert.Throws<NotSupportedException>(() => dict[default] = default);
         }
 
         [Theory]

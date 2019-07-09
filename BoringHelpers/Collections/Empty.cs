@@ -47,7 +47,7 @@ namespace BoringHelpers.Collections
                     if (key == null) throw new ArgumentNullException("Key cannot be NULL");
                     throw new KeyNotFoundException();
                 }
-                set => throw new KeyNotFoundException();
+                set => throw new NotSupportedException(ReadOnlyErrorMessage);
             }
 
             public bool Add(TKey item) => throw new NotSupportedException(ReadOnlyErrorMessage);

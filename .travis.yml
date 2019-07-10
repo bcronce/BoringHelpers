@@ -5,4 +5,4 @@ dotnet: 2.1.700
 solution: BoringHelpers.sln
 script:
   - dotnet restore
-  - dotnet test
+  - dotnet test -f netcoreapp2.1

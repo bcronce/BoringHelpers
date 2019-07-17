@@ -32,7 +32,7 @@ namespace BoringHelpers.Collections
             catch (ArgumentException ex)
             {
                 //key cannot be null, TryGetValue throws ArgumentNullException
-                throw new ArgumentException($"Key `{key}` already exists", ex);
+                throw new ArgumentException($"Key `{key}` already exists");
             }
         }
     }

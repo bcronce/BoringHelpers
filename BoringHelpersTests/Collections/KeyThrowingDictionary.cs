@@ -45,6 +45,39 @@ namespace BoringHelpersTests.Collections
         [InlineData("{6F9E54B5-6E93-44B3-8C0A-C2D0B86268A0}")]
         [InlineData("{4F7ECDAB-3BC9-49DF-8989-0B45C359455B}")]
         [InlineData("{241517B8-57B7-4242-9770-CFDB197B147A}")]
+        public void SetIndexer(string input)
+        {
+            KeyThrowingDictionary<string, bool> dict = new KeyThrowingDictionary<string, bool>();
+            dict[input] = default;
+            Assert.True(dict.ContainsKey(input));
+        }
+
+        [Theory]
+        [InlineData("{6F9E54B5-6E93-44B3-8C0A-C2D0B86268A0}")]
+        [InlineData("{4F7ECDAB-3BC9-49DF-8989-0B45C359455B}")]
+        [InlineData("{241517B8-57B7-4242-9770-CFDB197B147A}")]
+        public void SetIndexer_Dictionary(string input)
+        {
+            Dictionary<string, bool> dict = new KeyThrowingDictionary<string, bool>();
+            dict[input] = default;
+            Assert.True(dict.ContainsKey(input));
+        }
+
+        [Theory]
+        [InlineData("{6F9E54B5-6E93-44B3-8C0A-C2D0B86268A0}")]
+        [InlineData("{4F7ECDAB-3BC9-49DF-8989-0B45C359455B}")]
+        [InlineData("{241517B8-57B7-4242-9770-CFDB197B147A}")]
+        public void SetIndexer_IDictionary(string input)
+        {
+            IDictionary<string, bool> dict = new KeyThrowingDictionary<string, bool>();
+            dict[input] = default;
+            Assert.True(dict.ContainsKey(input));
+        }
+
+        [Theory]
+        [InlineData("{6F9E54B5-6E93-44B3-8C0A-C2D0B86268A0}")]
+        [InlineData("{4F7ECDAB-3BC9-49DF-8989-0B45C359455B}")]
+        [InlineData("{241517B8-57B7-4242-9770-CFDB197B147A}")]
         public void DoubleAdd(string input)
         {
             KeyThrowingDictionary<string, bool> dict = new KeyThrowingDictionary<string, bool>();

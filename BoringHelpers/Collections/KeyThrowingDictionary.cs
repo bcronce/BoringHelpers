@@ -19,14 +19,7 @@ namespace BoringHelpers.Collections
             }
             set
             {
-                try
-                {
-                    base[key] = value;
-                }
-                catch (KeyNotFoundException ex)
-                {
-                    throw new KeyNotFoundException($"Key `{key}` not found", ex);
-                }
+                base[key] = value;
             }
         }
 

@@ -242,11 +242,14 @@ namespace BoringHelpers.Collections
                 set => throw new NotSupportedException(ReadOnlyErrorMessage);
             }
 
-            public SingleDictionary(KeyValuePair<TKey, TValue> item) : base(item)
-                => this.keyComparer = EqualityComparer<TKey>.Default;
+            public SingleDictionary(KeyValuePair<TKey, TValue> item) : this(item, EqualityComparer<TKey>.Default) { }
 
             public SingleDictionary(KeyValuePair<TKey, TValue> item, IEqualityComparer<TKey> comparer)
-                : base(item) => this.keyComparer = comparer;
+                : base(item)
+            {
+                if (item.Key == null) throw new ArgumentNullException("Key cannot be NULL");
+                this.keyComparer = comparer;
+            }
 
             public void Add(TKey key, TValue value) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
@@ -256,6 +259,7 @@ namespace BoringHelpers.Collections
 
             public bool TryGetValue(TKey key, out TValue value)
             {
+                if (key == null) throw new ArgumentNullException("Key cannot be NULL");
                 if (this.keyComparer.Equals(key, this.item.Key))
                 {
                     value = this.item.Value;

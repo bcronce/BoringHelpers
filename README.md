@@ -26,3 +26,7 @@ In my expereience, it is very common to have a collection of a single element. W
 I can't tell you how many times I've seen `new Dictionary {{ key, value }}`. Not only does the `Dictionary` collection need to make an `Array`, it also needs to hash the key. When working with a single collection, you can just hold the single `KeyValue` and skip hashing on both creation and lookups. Similar optimizations can be made to other collections when you only have a single element.
 
 Also in my expereience, many of these single element collections tend to be allocated in hot paths. Sizable reductions in GC and CPU time can be had while making the code easier to read. Win-win-win.
+## KeyThrowingDictionary
+Admit it. You've had it where some quickly slapped together project throws a `KeyNotFound` exception and you get driven crazy that you have no idea what `key` caused the exception.
+
+I was originally going to create a new class that wrapped a `Dictionary`, but that would cause more code paths to have to be tested and meant two objects would be created. I played around with just inheriting from `Dictionary` and it worked well. It allowed for a minimal class that only changed the few methods that I cared to change with the additional benefit that this can be downcasted into a `Dictionary` for those times someone didn't give an `IDictionary` signature.

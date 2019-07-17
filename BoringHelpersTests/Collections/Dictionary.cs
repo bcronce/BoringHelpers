@@ -93,6 +93,40 @@ namespace BoringHelpersTests.Collections
             Assert.True(dict[input]);
         }
 
+        [Fact]
+        public void Individual_KeyNotNull_Instantiation()
+        {
+            Assert.Throws<ArgumentNullException>(() => Individual.Dictionary((object)null, true));
+        }
+
+        [Fact]
+        public void Individual_KeyNotNull_TryGet()
+        {
+            var dict = Individual.Dictionary(new object(), true);
+            Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out bool discard));
+        }
+
+        [Fact]
+        public void Individual_KeyNotNull_Contains()
+        {
+            var dict = Individual.Dictionary(new object(), true);
+            Assert.Throws<ArgumentNullException>(() => dict.ContainsKey(null));
+        }
+
+        [Fact]
+        public void Individual_KeyNotNull_Indexer()
+        {
+            var dict = Individual.Dictionary(new object(), true);
+            Assert.Throws<ArgumentNullException>(() => dict[null]);
+        }
+
+        [Fact]
+        public void Individual_SetIndexer()
+        {
+            var dict = Individual.Dictionary<int, bool>(default, default);
+            Assert.Throws<NotSupportedException>(() => dict[default] = default);
+        }
+
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
@@ -141,6 +175,34 @@ namespace BoringHelpersTests.Collections
         {
             var dict = Individual.Dictionary(true, input);
             Assert.Single(dict.Values, input);
+        }
+
+        [Fact]
+        public void Empty_KeyNotNull_TryGet()
+        {
+            var dict = Empty.Dictionary<object, bool>();
+            Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out bool discard));
+        }
+
+        [Fact]
+        public void Empty_KeyNotNull_Contains()
+        {
+            var dict = Empty.Dictionary<object, bool>();
+            Assert.Throws<ArgumentNullException>(() => dict.ContainsKey(null));
+        }
+
+        [Fact]
+        public void Empty_KeyNotNull_Indexer()
+        {
+            var dict = Empty.Dictionary<object, bool>();
+            Assert.Throws<ArgumentNullException>(() => dict[null]);
+        }
+
+        [Fact]
+        public void Empty_SetIndexer()
+        {
+            var dict = Empty.Dictionary<int, bool>();
+            Assert.Throws<NotSupportedException>(() => dict[default] = default);
         }
 
         [Theory]

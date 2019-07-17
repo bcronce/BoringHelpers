@@ -42,7 +42,13 @@ namespace BoringHelpers.Collections
             public ICollection<TValue> Values => Empty.Collection<TValue>();
 
             public TKey this[int index] { get => throw new IndexOutOfRangeException(); set => throw new NotSupportedException(ReadOnlyErrorMessage); }
-            public TValue this[TKey key] { get => throw new KeyNotFoundException(); set => throw new KeyNotFoundException(); }
+            public TValue this[TKey key] { get
+                {
+                    if (key == null) throw new ArgumentNullException("Key cannot be NULL");
+                    throw new KeyNotFoundException();
+                }
+                set => throw new NotSupportedException(ReadOnlyErrorMessage);
+            }
 
             public bool Add(TKey item) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
@@ -82,10 +88,15 @@ namespace BoringHelpers.Collections
 
             public void Add(TKey key, TValue value) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
-            public bool ContainsKey(TKey key) => false;
+            public bool ContainsKey(TKey key)
+            {
+                if (key == null) throw new ArgumentNullException("Key cannot be NULL");
+                return false;
+            }
 
             public bool TryGetValue(TKey key, out TValue value)
             {
+                if (key == null) throw new ArgumentNullException("Key cannot be NULL");
                 value = default;
                 return false;
             }

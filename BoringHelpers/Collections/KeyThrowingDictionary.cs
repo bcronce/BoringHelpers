@@ -57,5 +57,12 @@ namespace BoringHelpers.Collections
         }
 
         void IDictionary<TKey, TValue>.Add(TKey key, TValue value) => this.Add(key, value);
+
+        public KeyThrowingDictionary() : base() { }
+        public KeyThrowingDictionary(IDictionary<TKey, TValue> dictionary) : base(dictionary) { }
+        public KeyThrowingDictionary(IEqualityComparer<TKey> comparer) : base(comparer) { }
+        public KeyThrowingDictionary(int initialCapacity) : base(initialCapacity) { }
+        public KeyThrowingDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer) : base(dictionary, comparer) { }
+        public KeyThrowingDictionary(int initialCapacity, IEqualityComparer<TKey> comparer) : base(initialCapacity, comparer) { }
     }
 }

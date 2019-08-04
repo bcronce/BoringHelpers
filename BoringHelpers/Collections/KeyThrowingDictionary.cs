@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BoringHelpers.Collections
 {
-    public class KeyThrowingDictionary<TKey, TValue> : Dictionary<TKey, TValue>
+    public class KeyThrowingDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
     {
         public new TValue this[TKey key]
         {
@@ -14,12 +14,32 @@ namespace BoringHelpers.Collections
                 else
                 {
                     //key cannot be null, TryGetValue throws ArgumentNullException
-                    throw new KeyNotFoundException($"Key `{key}` not found");
+                    throw new KeyNotFoundException($"The given key '{key}' was not present in the dictionary.");
                 }
             }
             set
             {
                 base[key] = value;
+            }
+        }
+
+        TValue IDictionary<TKey, TValue>.this[TKey key]
+        {
+            get
+            {
+                return this[key];
+            }
+            set
+            {
+                this[key] = value;
+            }
+        }
+
+        TValue IReadOnlyDictionary<TKey, TValue>.this[TKey key]
+        {
+            get
+            {
+                return this[key];
             }
         }
 
@@ -29,11 +49,13 @@ namespace BoringHelpers.Collections
             {
                 base.Add(key, value);
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
                 //key cannot be null, TryGetValue throws ArgumentNullException
-                throw new ArgumentException($"Key `{key}` already exists");
+                throw new ArgumentException($"An item with the same key has already been added. Key: {key}");
             }
         }
+
+        void IDictionary<TKey, TValue>.Add(TKey key, TValue value) => this.Add(key, value);
     }
 }

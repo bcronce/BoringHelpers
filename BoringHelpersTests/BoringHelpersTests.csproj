@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;net46</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -14,6 +14,22 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <!-- .NET Standard 1.3 references, compilation flags and build options -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1'">
+    <DefineConstants>NETSTANDARD1_3;NETSTANDARD</DefineConstants>
+  </PropertyGroup>
+
+  <!-- .NET 4.6 references, compilation flags and build options -->
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net46'">
+    <DefineConstants>NET46;NETFULL</DefineConstants>
+  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BoringHelpers\BoringHelpers.csproj" />

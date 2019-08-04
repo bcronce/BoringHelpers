@@ -88,7 +88,7 @@ namespace BoringHelpersTests.Collections
         [InlineData("HeLlO wOrLd")]
         public void Individual_ContainsComparer(string input)
         {
-            var collection = Individual.Collection(input, StringComparer.InvariantCultureIgnoreCase);
+            var collection = Individual.Collection(input, StringComparer.OrdinalIgnoreCase);
             Assert.True(collection.Contains(input));
 
             if (!string.IsNullOrWhiteSpace(input))
@@ -104,7 +104,7 @@ namespace BoringHelpersTests.Collections
         [InlineData("HeLlO wOrLd")]
         public void Individual_ContainsComparer_List(string input)
         {
-            var collection = Individual.List(input, StringComparer.InvariantCultureIgnoreCase);
+            var collection = Individual.List(input, StringComparer.OrdinalIgnoreCase);
             Assert.True(collection.Contains(input));
 
             if (!string.IsNullOrWhiteSpace(input))
@@ -120,7 +120,7 @@ namespace BoringHelpersTests.Collections
         [InlineData("HeLlO wOrLd")]
         public void Individual_ContainsComparer_Set(string input)
         {
-            var collection = Individual.Set(input, StringComparer.InvariantCultureIgnoreCase);
+            var collection = Individual.Set(input, StringComparer.OrdinalIgnoreCase);
             Assert.True(collection.Contains(input));
 
             if (!string.IsNullOrWhiteSpace(input))

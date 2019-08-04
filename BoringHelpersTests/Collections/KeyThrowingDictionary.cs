@@ -8,6 +8,13 @@ namespace BoringHelpersTests.Collections
 {
     public class KeyThrowingDictionary
     {
+        [Fact]
+        public void KeyNotNull()
+        {
+            KeyThrowingDictionary<string, bool> dict = new KeyThrowingDictionary<string, bool>();
+            Assert.Throws<ArgumentNullException>(() => dict.Add(null, true));
+        }
+
         [Theory]
         [InlineData("{6F9E54B5-6E93-44B3-8C0A-C2D0B86268A0}")]
         [InlineData("{4F7ECDAB-3BC9-49DF-8989-0B45C359455B}")]

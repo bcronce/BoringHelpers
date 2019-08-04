@@ -49,6 +49,10 @@ namespace BoringHelpers.Collections
             {
                 base.Add(key, value);
             }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
             catch (ArgumentException)
             {
                 //key cannot be null, TryGetValue throws ArgumentNullException

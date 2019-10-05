@@ -7,7 +7,7 @@ namespace BoringHelpers.Collections
 {
     public static class Empty
     {
-        public struct VoidStruct { };
+        public struct VoidStruct { }
 
         public static IList<T> List<T>() => EmptyCollection<T, VoidStruct>.Singleton();
 
@@ -121,7 +121,6 @@ namespace BoringHelpers.Collections
 
         private class EmptyEnumerator<T> : IEnumerator<T>
         {
-
             public static EmptyEnumerator<T> Singleton { get; protected set; } = new EmptyEnumerator<T>();
             protected EmptyEnumerator() { }
 
@@ -134,7 +133,6 @@ namespace BoringHelpers.Collections
             public void Reset() { }
 
             public void Dispose() { }
-
         }
     }
 }

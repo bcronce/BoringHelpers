@@ -82,9 +82,7 @@ namespace BoringHelpers.Collections
             public void Reset() => throw new NotSupportedException();
 
             public void Dispose()
-            {
-
-            }
+            { }
         }
 
         private class SingleCollection<T> : ICollection<T>, IReadOnlyCollection<T>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using BoringHelpers.Collections;
 using System;
 
-
 namespace BoringHelpersTests.Collections
 {
     public class KeyThrowingDictionary

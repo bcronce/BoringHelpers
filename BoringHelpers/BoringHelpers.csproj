@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
     <RuntimeIdentifiers>win7-x86;win7-x64</RuntimeIdentifiers>
     <Authors>Benjamin Cronce</Authors>
-    <Version>0.1.2.0</Version>
+    <Version>0.1.3.0</Version>
     <Copyright>Copyright ©2019 Benjamin Cronce</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/bcronce/BoringHelpers</PackageProjectUrl>

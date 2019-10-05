@@ -2,6 +2,8 @@
 [![Licence](https://img.shields.io/github/license/bcronce/BoringHelpers.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/bcronce/BoringHelpers.svg?branch=master)](https://travis-ci.org/bcronce/BoringHelpers)
 [![NuGet](https://img.shields.io/nuget/v/BoringHelpers.svg)](https://www.nuget.org/packages/BoringHelpers/)
+[![CodeFactor](https://www.codefactor.io/repository/github/bcronce/boringhelpers/badge)](https://www.codefactor.io/repository/github/bcronce/boringhelpers)
+
 
 General use library inspired by common patterns seen in production code.
 

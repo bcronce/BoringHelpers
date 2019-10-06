@@ -1,8 +1,13 @@
 if: (branch = master) OR (type = pull_request)
 language: csharp
-mono: none
+mono:
+  - latest
 dotnet: 2.1.700
-solution: BoringHelpers.sln
+install:
+  - nuget restore BoringHelpers.sln
+  - nuget install xunit.runners -Version 2.0.0 -OutputDirectory testrunner
 script:
   - dotnet restore
   - dotnet test -f netcoreapp2.1
+  - dotnet build BoringHelpers.sln -f net46 -c Release
+  - mono ./packages/xunit.runners.*/tools/xunit.console.clr4.exe ./BoringHelpersTests/bin/Release/net46/BoringHelpersTests.dll

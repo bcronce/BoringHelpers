@@ -21,7 +21,7 @@ namespace BoringHelpers.Types
 
         public bool Equals(SimpleMetadata<T> other)
         {
-            if (other == null) return false;
+            if (object.ReferenceEquals(other, null)) return false;
             if (this.GetType() != other.GetType()) return false;
             return this.CompareTo(other) == CompareIsEqual;
         }

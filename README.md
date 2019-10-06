@@ -32,3 +32,38 @@ Also in my expereience, many of these single element collections tend to be allo
 Admit it. You've had it where some quickly slapped together project throws a `KeyNotFound` exception and you get driven crazy that you have no idea what `key` caused the exception.
 
 I was originally going to create a new class that wrapped a `Dictionary`, but that would cause more code paths to have to be tested and meant two objects would be created. I played around with just inheriting from `Dictionary` and it worked well. It allowed for a minimal class that only changed the few methods that I cared to change with the additional benefit that this can be downcasted into a `Dictionary` for those times someone didn't give an `IDictionary` signature.
+
+# Types
+For now, it's just `SimpleMetadata`
+## SimpleMetadata
+Some times you have coode that looks like
+```csharp
+void SomeMethod(Guid id, string typeId)
+```
+And it's just `Guid` this and `string` that. So you want to make proper types so you code can look like
+```csharp
+void SomeMethod(EntityId id, EntityTypeId typeId)
+```
+But can be a lot of yak shaving if you want to have something like `Dictionary<EntityId, value>`. You can instead do something like
+```csharp
+public class EntityId : SimpleMetadata<Guid>
+{
+    public EntityId(string value)
+        : base(value) { }
+}
+```
+Now you have `EntityId` without all of the setup.
+
+And if you have some special situation, you can easily override the behavior, like case insensitive.
+```csharp
+public abstract class EntityTypeId : SimpleMetadata<string>
+{
+    protected override IEqualityComparer<string> EqualityComparer { get { return StringComparer.OrdinalIgnoreCase; } }
+    protected override IComparer<string> Comparer { get { return StringComparer.OrdinalIgnoreCase; } }
+
+    protected EntityTypeId(string value)
+        : base(value) { }
+}
+```
+
+And since case insensetive is such a common thing, I already included a class `CaseInsensitiveMetadata` that is implemented like the above `EntityTypeId` example.

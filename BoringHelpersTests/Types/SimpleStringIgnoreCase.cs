@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace BoringHelpersTests.Types
 {
-    public class SimpleString : SimpleMetadata<string>
+    public class SimpleStringIgnoreCase : CaseInsensitiveMetadata
     {
-        public SimpleString(string value)
+        public SimpleStringIgnoreCase(string value)
             : base(value) { }
     }
 }

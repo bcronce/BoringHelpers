@@ -67,3 +67,19 @@ public abstract class EntityTypeId : SimpleMetadata<string>
 ```
 
 And since case insensetive is such a common thing, I already included a class `CaseInsensitiveMetadata` that is implemented like the above `EntityTypeId` example.
+
+And yes, `==` is overriden. So you get this out of the box.
+```csharp
+public class EntityId : SimpleMetadata<Guid>
+{
+    public EntityId(string value)
+        : base(value) { }
+}
+
+Guid value = Guid.NewGuid();
+EntityId id = new EntityId(value);
+EntityId id2 = new EntityId(value);
+
+Assert.True(id == id2);
+Assert.True(id == value);
+```

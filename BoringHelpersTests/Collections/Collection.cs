@@ -145,9 +145,40 @@ namespace BoringHelpersTests.Collections
         }
 
         [Fact]
-        public void Empty_CannotAdd()
+        public void EmptyCollection_ProperInterfaces()
         {
             var collection = Empty.Collection<int>();
+            Assert.IsAssignableFrom<ICollection<int>>(collection);
+            Assert.IsAssignableFrom<IReadOnlyCollection<int>>(collection);
+        }
+
+        [Fact]
+        public void EmptyList_ProperInterfaces()
+        {
+            var list = Empty.List<int>();
+            Assert.IsAssignableFrom<IList<int>>(list);
+            Assert.IsAssignableFrom<IReadOnlyList<int>>(list);
+        }
+
+        [Fact]
+        public void EmptySet_ProperInterfaces()
+        {
+            var set = Empty.Set<int>();
+            Assert.IsAssignableFrom<ISet<int>>(set);
+        }
+
+        [Fact]
+        public void EmptyDictionary_ProperInterfaces()
+        {
+            var dictionary = Empty.Dictionary<int, int>();
+            Assert.IsAssignableFrom<IDictionary<int, int>>(dictionary);
+            Assert.IsAssignableFrom<IReadOnlyDictionary<int, int>>(dictionary);
+        }
+
+        [Fact]
+        public void Empty_CannotAdd()
+        {
+            Empty.EmptyCollection<int> collection = Empty.Collection<int>();
             Assert.Throws<NotSupportedException>(() => collection.Add(default));
         }
 

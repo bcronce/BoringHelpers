@@ -172,6 +172,7 @@ namespace BoringHelpersTests.Collections
         public void Empty_HasNone() => Assert.Empty(Empty.Collection<int>());
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Assertions", "xUnit2013:Do not use equality check to check for collection size.", Justification = "Testing implementation of Count")]
         public void Individual_CountZero() => Assert.Equal(0, Empty.Collection<int>().Count);
 
         [Fact]

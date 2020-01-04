@@ -7,7 +7,10 @@ namespace BoringHelpers.Collections
 {
     public static class Empty
     {
-        public struct VoidStruct { }
+        public struct VoidStruct
+        {
+            public static VoidStruct Singleton = default;
+        }
 
         public static IList<T> List<T>() => EmptyCollection<T, VoidStruct>.Singleton();
 

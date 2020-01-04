@@ -181,5 +181,13 @@ namespace BoringHelpersTests.Collections
             var emptyArray = new int[0];
             collection.CopyTo(emptyArray, 0);
         }
+
+        [Fact]
+        public void Void_Singleton()
+        {
+            //Just make sure the void singletone exists
+            Empty.VoidStruct nothing = Empty.VoidStruct.Singleton;
+            Assert.NotNull(nothing.ToString()); //Make sure assignment doesn't get optimized out
+        }
     }
 }

@@ -190,5 +190,13 @@ namespace BoringHelpersTests.Collections
             Empty.VoidStruct nothing = Empty.VoidStruct.Singleton;
             Assert.NotNull(nothing.ToString()); //Make sure assignment doesn't get optimized out
         }
+
+        [Fact]
+        public void Empty_Array()
+        {
+            //Just make sure the EmptyArray method exists
+            int[] empty = Empty.Array<int>();
+            Assert.NotNull(empty.ToString()); //Make sure assignment doesn't get optimized out
+        }
     }
 }

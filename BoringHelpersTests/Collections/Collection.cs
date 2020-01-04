@@ -145,9 +145,40 @@ namespace BoringHelpersTests.Collections
         }
 
         [Fact]
-        public void Empty_CannotAdd()
+        public void EmptyCollection_ProperInterfaces()
         {
             var collection = Empty.Collection<int>();
+            Assert.IsAssignableFrom<ICollection<int>>(collection);
+            Assert.IsAssignableFrom<IReadOnlyCollection<int>>(collection);
+        }
+
+        [Fact]
+        public void EmptyList_ProperInterfaces()
+        {
+            var list = Empty.List<int>();
+            Assert.IsAssignableFrom<IList<int>>(list);
+            Assert.IsAssignableFrom<IReadOnlyList<int>>(list);
+        }
+
+        [Fact]
+        public void EmptySet_ProperInterfaces()
+        {
+            var set = Empty.Set<int>();
+            Assert.IsAssignableFrom<ISet<int>>(set);
+        }
+
+        [Fact]
+        public void EmptyDictionary_ProperInterfaces()
+        {
+            var dictionary = Empty.Dictionary<int, int>();
+            Assert.IsAssignableFrom<IDictionary<int, int>>(dictionary);
+            Assert.IsAssignableFrom<IReadOnlyDictionary<int, int>>(dictionary);
+        }
+
+        [Fact]
+        public void Empty_CannotAdd()
+        {
+            Empty.EmptyCollection<int> collection = Empty.Collection<int>();
             Assert.Throws<NotSupportedException>(() => collection.Add(default));
         }
 
@@ -172,6 +203,7 @@ namespace BoringHelpersTests.Collections
         public void Empty_HasNone() => Assert.Empty(Empty.Collection<int>());
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Assertions", "xUnit2013:Do not use equality check to check for collection size.", Justification = "Testing implementation of Count")]
         public void Individual_CountZero() => Assert.Equal(0, Empty.Collection<int>().Count);
 
         [Fact]
@@ -180,6 +212,22 @@ namespace BoringHelpersTests.Collections
             var collection = Empty.Collection<int>();
             var emptyArray = new int[0];
             collection.CopyTo(emptyArray, 0);
+        }
+
+        [Fact]
+        public void Void_Singleton()
+        {
+            //Just make sure the void singletone exists
+            Empty.VoidStruct nothing = Empty.VoidStruct.Singleton;
+            Assert.NotNull(nothing.ToString()); //Make sure assignment doesn't get optimized out
+        }
+
+        [Fact]
+        public void Empty_Array()
+        {
+            //Just make sure the EmptyArray method exists
+            int[] empty = Empty.Array<int>();
+            Assert.NotNull(empty.ToString()); //Make sure assignment doesn't get optimized out
         }
     }
 }

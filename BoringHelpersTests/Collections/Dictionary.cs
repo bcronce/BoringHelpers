@@ -93,31 +93,42 @@ namespace BoringHelpersTests.Collections
             Assert.True(dict[input]);
         }
 
+
         [Fact]
         public void Individual_KeyNotNull_Instantiation()
         {
+#pragma warning disable CS8714 // Still want to test this, but this call should not be allowed because of CS8714
+#pragma warning disable CS8600 // Still want to test this, but this call should not be allowed because of CS8600
             Assert.Throws<ArgumentNullException>(() => Individual.Dictionary((object)null, true));
+#pragma warning restore CS8600
+#pragma warning restore CS8714
         }
 
         [Fact]
         public void Individual_KeyNotNull_TryGet()
         {
             var dict = Individual.Dictionary(new object(), true);
+#pragma warning disable CS8625 // Still want to test this, but this call should not be allowed because of CS8625
             Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out bool discard));
+#pragma warning restore CS8625
         }
 
         [Fact]
         public void Individual_KeyNotNull_Contains()
         {
             var dict = Individual.Dictionary(new object(), true);
+#pragma warning disable CS8625 // Still want to test this, but this call should not be allowed because of CS8625
             Assert.Throws<ArgumentNullException>(() => dict.ContainsKey(null));
+#pragma warning restore CS8625
         }
 
         [Fact]
         public void Individual_KeyNotNull_Indexer()
         {
             var dict = Individual.Dictionary(new object(), true);
+#pragma warning disable CS8625 // Still want to test this, but this call should not be allowed because of CS8625
             Assert.Throws<ArgumentNullException>(() => dict[null]);
+#pragma warning restore CS8625
         }
 
         [Fact]
@@ -181,21 +192,27 @@ namespace BoringHelpersTests.Collections
         public void Empty_KeyNotNull_TryGet()
         {
             var dict = Empty.Dictionary<object, bool>();
+#pragma warning disable CS8625 // Still want to test this, but this call should not be allowed because of CS8625
             Assert.Throws<ArgumentNullException>(() => dict.TryGetValue(null, out bool discard));
+#pragma warning restore CS8625
         }
 
         [Fact]
         public void Empty_KeyNotNull_Contains()
         {
             var dict = Empty.Dictionary<object, bool>();
+#pragma warning disable CS8625 // Still want to test this, but this call should not be allowed because of CS8625
             Assert.Throws<ArgumentNullException>(() => dict.ContainsKey(null));
+#pragma warning restore CS8625
         }
 
         [Fact]
         public void Empty_KeyNotNull_Indexer()
         {
             var dict = Empty.Dictionary<object, bool>();
+#pragma warning disable CS8625 // Still want to test this, but this call should not be allowed because of CS8625
             Assert.Throws<ArgumentNullException>(() => dict[null]);
+#pragma warning restore CS8625
         }
 
         [Fact]

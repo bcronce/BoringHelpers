@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+#if NETSTANDARD2_1
+using System.Diagnostics.CodeAnalysis;
+#endif
 
 namespace BoringHelpers.Collections
 {
@@ -16,7 +19,11 @@ namespace BoringHelpers.Collections
 
         public static EmptyList<T> List<T>() => EmptyList<T>.Singleton();
 
-        public static EmptyDictionary<TKey, TValue> Dictionary<TKey, TValue>() => EmptyDictionary<TKey, TValue>.Singleton();
+        public static EmptyDictionary<TKey, TValue> Dictionary<TKey, TValue>()
+#if NETSTANDARD2_1
+            where TKey : notnull
+#endif
+            => EmptyDictionary<TKey, TValue>.Singleton();
 
         public static EmptyCollection<T> Collection<T>() => EmptyCollection<T>.Singleton();
 
@@ -29,6 +36,9 @@ namespace BoringHelpers.Collections
         public static EmptySet<TKey> Set<TKey>() => EmptySet<TKey>.Singleton();
 
         public class EmptyDictionary<TKey, TValue> : EmptyCollection<KeyValuePair<TKey, TValue>>, IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
+#if NETSTANDARD2_1
+            where TKey: notnull
+#endif
         {
             private static EmptyDictionary<TKey, TValue> m_Singleton = new EmptyDictionary<TKey, TValue>();
             public static new EmptyDictionary<TKey, TValue> Singleton() => m_Singleton;
@@ -64,7 +74,9 @@ namespace BoringHelpers.Collections
             public bool TryGetValue(TKey key, out TValue value)
             {
                 if (key == null) throw new ArgumentNullException("Key cannot be NULL");
+#pragma warning disable CS8653 // Because of CS8653, read that I should just ignore this
                 value = default;
+#pragma warning restore CS8653
                 return false;
             }
 

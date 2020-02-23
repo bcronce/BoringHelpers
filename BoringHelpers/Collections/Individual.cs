@@ -11,9 +11,16 @@ namespace BoringHelpers.Collections
 
         public static IReadOnlyList<T> ReadOnlyList<T>(T item) => new SingleList<T>(item);
 
-        public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(TKey key, TValue value) => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value));
+        public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(TKey key, TValue value)
+#if NETSTANDARD2_1
+            where TKey : notnull
+#endif
+            => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value));
 
         public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(TKey key, TValue value, IEqualityComparer<TKey> comparer)
+#if NETSTANDARD2_1
+            where TKey : notnull
+#endif
             => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value), comparer);
 
         public static IReadOnlyCollection<T> ReadOnlyCollection<T>(T item) => new SingleCollection<T>(item);
@@ -22,9 +29,16 @@ namespace BoringHelpers.Collections
 
         public static IList<T> List<T>(T item, IEqualityComparer<T> comparer) => new SingleList<T>(item, comparer);
 
-        public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>(TKey key, TValue value) => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value));
+        public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>(TKey key, TValue value)
+#if NETSTANDARD2_1
+            where TKey : notnull
+#endif
+            => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value));
 
         public static IDictionary<TKey, TValue> Dictionary<TKey, TValue>(TKey key, TValue value, IEqualityComparer<TKey> comparer)
+#if NETSTANDARD2_1
+            where TKey : notnull
+#endif
             => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value), comparer);
 
         public static ICollection<T> Collection<T>(T item) => new SingleCollection<T>(item);
@@ -67,10 +81,10 @@ namespace BoringHelpers.Collections
             private bool moved = false;
 
             public SingleEnumerator(T item) => this.Current = item;
-
             public T Current { get; }
-
+#pragma warning disable CS8603 // Because of CS8603, read that I should just ignore this
             object IEnumerator.Current => this.Current;
+#pragma warning restore CS8603
 
             public bool MoveNext()
             {
@@ -219,6 +233,9 @@ namespace BoringHelpers.Collections
         }
 
         private class SingleDictionary<TKey, TValue> : SingleCollection<KeyValuePair<TKey, TValue>>, IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
+#if NETSTANDARD2_1
+            where TKey : notnull
+#endif
         {
             protected IEqualityComparer<TKey> keyComparer;
 
@@ -265,7 +282,9 @@ namespace BoringHelpers.Collections
                 }
                 else
                 {
+#pragma warning disable CS8653 // Because of CS8653, read that I should just ignore this
                     value = default;
+#pragma warning restore CS8653
                     return false;
                 }
             }

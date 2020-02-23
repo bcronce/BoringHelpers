@@ -21,7 +21,7 @@
 
   <!-- .NET Standard 2.0 references, compilation flags and build options -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1'">
-    <DefineConstants>NETSTANDARD2_0;NETSTANDARD</DefineConstants>
+    <DefineConstants>NETSTANDARD2_1;NETSTANDARD</DefineConstants>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>CS8600;CS8602;CS8603;CS8604;CS8625;CS8714</WarningsAsErrors>

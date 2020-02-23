@@ -11,7 +11,9 @@ namespace BoringHelpersTests.Collections
         public void KeyNotNull()
         {
             KeyThrowingDictionary<string, bool> dict = new KeyThrowingDictionary<string, bool>();
+#pragma warning disable CS8625 // Still want to test this, but this call should not be allowed because of CS8625
             Assert.Throws<ArgumentNullException>(() => dict.Add(null, true));
+#pragma warning restore CS8625
         }
 
         [Theory]

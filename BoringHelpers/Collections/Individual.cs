@@ -2,15 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
+#if NETSTANDARD2_1
+using System.Diagnostics.CodeAnalysis;
+#endif
 
 namespace BoringHelpers.Collections
 {
+#if NETSTANDARD2_1
+#nullable disable
+#endif
     public static class Individual
     {
         private const string ReadOnlyErrorMessage = "Collection is read-only";
 
         public static IReadOnlyList<T> ReadOnlyList<T>(T item) => new SingleList<T>(item);
 
+#if NETSTANDARD2_1
+#nullable enable
+#endif
         public static IReadOnlyDictionary<TKey, TValue> ReadOnlyDictionary<TKey, TValue>(TKey key, TValue value)
 #if NETSTANDARD2_1
             where TKey : notnull
@@ -22,6 +31,9 @@ namespace BoringHelpers.Collections
             where TKey : notnull
 #endif
             => new SingleDictionary<TKey, TValue>(new KeyValuePair<TKey, TValue>(key, value), comparer);
+#if NETSTANDARD2_1
+#nullable disable
+#endif
 
         public static IReadOnlyCollection<T> ReadOnlyCollection<T>(T item) => new SingleCollection<T>(item);
 
@@ -81,10 +93,10 @@ namespace BoringHelpers.Collections
             private bool moved = false;
 
             public SingleEnumerator(T item) => this.Current = item;
+
             public T Current { get; }
-#pragma warning disable CS8603 // Because of CS8603, read that I should just ignore this
+
             object IEnumerator.Current => this.Current;
-#pragma warning restore CS8603
 
             public bool MoveNext()
             {
@@ -232,6 +244,9 @@ namespace BoringHelpers.Collections
             public void RemoveAt(int index) => throw new NotSupportedException(ReadOnlyErrorMessage);
         }
 
+#if NETSTANDARD2_1
+#nullable enable
+#endif
         private class SingleDictionary<TKey, TValue> : SingleCollection<KeyValuePair<TKey, TValue>>, IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
 #if NETSTANDARD2_1
             where TKey : notnull
@@ -272,7 +287,11 @@ namespace BoringHelpers.Collections
 
             public bool Remove(TKey key) => throw new NotSupportedException(ReadOnlyErrorMessage);
 
+#if NETSTANDARD2_1
+            public bool TryGetValue(TKey key, [MaybeNull] out TValue value)
+#else
             public bool TryGetValue(TKey key, out TValue value)
+#endif
             {
                 if (key == null) throw new ArgumentNullException("Key cannot be NULL");
                 if (this.keyComparer.Equals(key, this.item.Key))
@@ -282,12 +301,20 @@ namespace BoringHelpers.Collections
                 }
                 else
                 {
-#pragma warning disable CS8653 // Because of CS8653, read that I should just ignore this
+#if NETSTANDARD2_1
+                    // The null-forgiving operator is mandatory here. This may be fixed in a future version of the compiler.
+                    // https://github.com/dotnet/roslyn/issues/30953
+                    // Thanks to https://www.meziantou.net/csharp-8-nullable-reference-types.htm#tryparse-trygetvalue
+                    value = default!;
+#else
                     value = default;
-#pragma warning restore CS8653
+#endif
                     return false;
                 }
             }
         }
+#if NETSTANDARD2_1
+#nullable disable
+#endif
     }
 }

@@ -33,7 +33,7 @@
     <DefineConstants>NETSTANDARD2_1;NETSTANDARD</DefineConstants>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
-    <WarningsAsErrors>CS8600;CS8602;CS8603;CS8604;CS8625;CS8714</WarningsAsErrors>
+    <WarningsAsErrors>CS8600;CS8602;CS8603;CS8604;CS8625;CS8714;CS8653</WarningsAsErrors>
   </PropertyGroup>
 
   <!-- .NET 4.6 references, compilation flags and build options -->
